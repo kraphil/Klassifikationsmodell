@@ -270,35 +270,3 @@ def plotFalseDuration(false_positive_df, false_negative_df, activity, statistics
     plt.title('False Negative: ' + activity)
     
     plt.show()
-
-    
-'''
-#swap 2 activity within a case
-groupByCase = duration_df.groupby(['CaseID'])
-
-anomalous_act_index = []
-caseid_list = []
-temp_df = duration_df.copy()
-temp_df['AnomalousActivity'] = temp_df['Activity'].copy()
-temp_df['ActivityLabel'] = 0
-
-while len(anomalous_act_index) < anomalous_act_num:
-    caseid = np.random.randint(1, len(groupByCase))
-    if caseid not in caseid_list:
-        group = groupByCase.get_group(caseid)
-        row1 = np.random.randint(0, group.shape[0])
-        row2 = np.random.randint(0, group.shape[0])
-        index1 = group.index.values[row1]
-        index2 = group.index.values[row2]
-        act1 = duration_df['Activity'].iloc[index1]
-        act2 = duration_df['Activity'].iloc[index2]
-        if act1 != act2:
-            anomalous_act_index.append(index1)
-            anomalous_act_index.append(index2)
-            temp_df['AnomalousActivity'].iloc[index1] = act2
-            temp_df['AnomalousActivity'].iloc[index2] = act1
-            temp_df['ActivityLabel'].iloc[index1] = 1
-            temp_df['ActivityLabel'].iloc[index2] = 1
-            
-temp_act = temp_df[['AnomalousActivity', 'ActivityLabel']]
-'''
