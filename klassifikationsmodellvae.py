@@ -40,9 +40,9 @@ sys.path.insert(0, 'models.py')
 from utils import *
 from models import *
 
-#name = 'bpi_2012'
-name = 'small_log'
-#name = 'Road_Traffic_Fine_Management_Process'  
+name = 'bpi_2013'
+name = 'ds1'
+name = 'ds2'  
 
 parser = {
     'train': True,
