@@ -170,42 +170,6 @@ lstmae.compile(optimizer=Adam(learning_rate=0.006), loss=vae_loss)
 lstmae.summary()
 plot_model(lstmae, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
-"""timesteps = input_train.shape[1]
-input_dim = input_train.shape[2]
-latent_dim = 100 #=hidden units, wie groß?
-
-#Input
-inputs = Input(shape=(timesteps, input_dim))
-
-#Encoder LSTM
-encoder_stack_h, encoder_last_h, encoder_last_c, *_ = Bidirectional(LSTM(latent_dim, activation="relu", return_state=True, return_sequences=True))(inputs) #ggf. *_ entfernen
-encoder_last_h = BatchNormalization(momentum=0.6)(encoder_last_h)
-encoder_last_c = BatchNormalization(momentum=0.6)(encoder_last_c)
-print(encoder_stack_h)#(None, 14, 100)
-print(encoder_last_h) #(None, 100)
-
-#Decoder LSTM
-decoder = RepeatVector(timesteps)(encoder_last_h)
-decoder = Bidirectional(LSTM(latent_dim, activation="relu", return_sequences=True))(decoder) # ggf. in input_dim ändern / Bidirectional
-print(decoder) #(None, 14, 100)
-
-#Self-Attention
-attention = keras.layers.dot([decoder, encoder_stack_h], axes=[1,1])
-attention = Activation('softmax')(attention)
-print(attention)#(None, 100, 100)
-
-context = keras.layers.dot([encoder_stack_h, attention], axes=[2,2])
-print(context) #(None, 14, 100)?
-decoder_combined_context = concatenate([context, decoder])
-
-#Output
-output = TimeDistributed(Dense(input_dim, activation='sigmoid'))(decoder_combined_context) #ggf. durch 'decoder ersetzen'
-
-lstmae = Model(inputs, output)
-lstmae.compile(optimizer=Adam(learning_rate=0.006), loss='binary_crossentropy', metrics=['accuracy'])
-lstmae.summary()
-plot_model(lstmae, to_file='model_plot.png', show_shapes=True, show_layer_names=True)"""
-
 checkpointer = ModelCheckpoint(filepath="model_seqs2.h5",
                               verbose=0,
                               save_best_only=True)
@@ -215,7 +179,7 @@ tensorboard = TensorBoard(log_dir='./logs',
                           write_graph=True,
                           write_images=True)
 
-history = lstmae.fit(input_train,input_train, epochs=20, batch_size=64, verbose=1, validation_data=(input_test, input_test) )
+history = lstmae.fit(input_train,input_train, epochs=1000, batch_size=64, verbose=1, validation_data=(input_test, input_test) )
 
 #Modell Accuracy
 plt.plot(history.history['accuracy'])
